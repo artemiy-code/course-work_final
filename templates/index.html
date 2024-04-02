@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Shortcut</title>
+    <style>
+        body {
+            font-family:  Georgia, sans-serif;
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin: 0px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 30px;
+            font-size: 15px;
+            padding: 10px;
+        }
+        input[type="submit"] {
+            padding: 12px 24px;
+            background-color: #228cff;
+            font-size: 18px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p.message {
+            color: #cc0000;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Upload your resume</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".txt,.docx,.pdf,.doc">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    {% if message %}
+    <p class="message">{{ message }}</p>
+    {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Bullet Points</title>
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dde6d5;
+        }
+        .container {
+            max-width: 850px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        h1 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 30px;
+        }
+        p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #210a0a;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #5b5b5b;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Summary</h1>
+        <p><strong>Name:</strong> {{ resume_info.Name }}</p>
+        <p><strong>Date of Birth:</strong> {{ resume_info.Date_of_birth }}</p>
+        <p><strong>Phone Number:</strong> {{ resume_info.Phone_number }}</p>
+        <p><strong>Email:</strong> {{ resume_info.Email }}</p>
+        <p><strong>Address:</strong> {{ resume_info.Address }}</p>
+        <p><strong>University:</strong> {{ resume_info.University }}</p>
+        <p><strong>Faculty:</strong> {{ resume_info.Faculty }}</p>
+        <p><strong>Job Experience:</strong> {{ resume_info.Job_experience }}</p>
+        <p><strong>Languages:</strong> {{ resume_info.Languages }}</p>
+        <p><strong>Skills:</strong> {{ resume_info.Skills }}</p>
+        <p><strong>Salary:</strong> {{ resume_info.Salary }}</p>
+    </div>
+    <div class="footer">
+        &copy; 2024 HSE Course Work
+    </div>
+</body>
+</html>
