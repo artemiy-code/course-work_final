@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 import os
 import re
 from pypdf import PdfReader
+from patterns import name, Date_of_birth, phone, email, address, university, faculty, experience, languages, skills, \
+    salary
 
 app = Flask(__name__)
 
@@ -18,34 +20,48 @@ def extract_resume_info(file_path, resume_file):
     else:
         # txt, docx
         with open(file_path, 'r', encoding='latin-1') as file:
-            text = file.read().lower()
+            text = file.read()
+            # delete unwanted symbols
+    text = ''.join(char for char in text if ord(char) < 128)
+    text = text.encode('latin-1', errors='ignore').decode('latin-1')
+    text = text.lower()
+    text = text.replace(': \n', ' ').replace(':\n', ' ').replace(':', ' ')
+    text = text.replace('|', '.').replace('-', ' ').replace(': ', ' ')
+    pattern = [name, Date_of_birth, phone, email, address, university, faculty, experience, languages, skills, salary]
 
-    text = text.replace(': \n', ' ')
-    text = text.replace(':\n', ' ')
-    patterns = {
-        'name': r'name (.*?)\n',
-        'Date_of_birth': r'date of birth (.*?)\n',
-        'Phone_number': r'phone (.*?)\n',
-        'email': r'email (.*?)\n',
-        'address': r'address (.*?)\n',
-        'university': r'university (.*?)\n',
-        'faculty': r'faculty (.*?)\n',
-        'experience': r'experience (.*?)\n',
-        'languages': r'languages (.*?)\n',
-        'skills': r'skills (.*?)\n',
-        'salary': r'salary (.*?)\n'
-    }
-    for key, pattern in patterns.items():
-        match = re.search(pattern, text)
-        if match:
-            answer = match.group(1).strip().capitalize()
-            answer = answer.replace(':', '').replace('-', '')
-            split_answer = answer.split(".")
-            if key != 'Date_of_birth' and key != 'email':
-                answer = split_answer[0]
-            resume_data[key.capitalize()] = answer
-        else:
-            resume_data[key.capitalize()] = None
+    vocab = ["name", "Date_of_birth", "phone", "email", "address", "university", "faculty", "experience", "languages",
+             "skills", "salary"]
+    for word in vocab:
+        text = text.replace(word + "\n", word + " ")
+        text = text.replace(word + " \n", word + " ")
+
+    i = 0
+    for attribute in pattern:
+        iterator = 0
+        for regular_expression in attribute:
+            match = re.search(regular_expression, text)
+            if match:
+                if (i == 1 and iterator <= 3) or (i == 2 and iterator <= 8) or (i == 3 and iterator == 0) \
+                        or (i == 4 and iterator <= 4):
+                    answer = match.group(0).strip()
+                    if i != 3:
+                        answer = answer.capitalize()
+                else:
+                    answer = match.group(1).strip().capitalize()
+                answer = answer.replace(':', '').replace('-', '')
+                split_answer = answer.split(".")
+                if vocab[i] != 'Date_of_birth' and vocab[i] != 'email':
+                    if split_answer[0] is not None:
+                        answer = split_answer[0]
+                resume_data[vocab[i].capitalize()] = answer
+                break
+            else:
+                resume_data[vocab[i].capitalize()] = None
+            iterator += 1
+        i += 1
+    if resume_data["Name"] is None:
+        if ("summary" or "resume" or "cv") not in text.splitlines()[0]:
+            resume_data["Name"] = (text.split()[0].capitalize() + " " + text.split()[1].capitalize())
     return resume_data
 
 
